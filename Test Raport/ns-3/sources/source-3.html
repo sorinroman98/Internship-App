@@ -1,0 +1,98 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > OrdersService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.intershipjava.intershipproject.services</a>
+</div>
+
+<h1>Coverage Summary for Class: OrdersService (com.intershipjava.intershipproject.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">OrdersService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.intershipjava.intershipproject.services;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.intershipjava.intershipproject.dto.OrderCreateDto;
+<i class="no-highlight">4</i>&nbsp;import com.intershipjava.intershipproject.dto.OrderDto;
+<i class="no-highlight">5</i>&nbsp;import com.intershipjava.intershipproject.dto.OrderPayDto;
+<i class="no-highlight">6</i>&nbsp;import com.intershipjava.intershipproject.model.Customer;
+<i class="no-highlight">7</i>&nbsp;import com.intershipjava.intershipproject.model.Order;
+<i class="no-highlight">8</i>&nbsp;import com.intershipjava.intershipproject.model.Product;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;import javax.mail.internet.ParseException;
+<i class="no-highlight">11</i>&nbsp;import java.util.List;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;public interface OrdersService {
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;    List&lt;OrderDto&gt; getOrderListDba();
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;    List&lt;Product&gt; processOrderDBA(OrderCreateDto orderRequest);
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    Order payOrderDba(OrderPayDto orderPayRequest) throws ParseException, java.text.ParseException;
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;    OrderDto orderToOrderDto(Order order);
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;    Order orderDtoToOrder(OrderDto orderDto);
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;    List&lt;OrderDto&gt; orderToOrderDto(List&lt;Order&gt; orderList);
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;    List&lt;Product&gt; createDtoOrder(Customer customer, List&lt;String&gt; idProducts);
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-11-11 16:10</div>
+</div>
+</body>
+</html>

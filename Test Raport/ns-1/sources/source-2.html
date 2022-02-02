@@ -1,0 +1,270 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > OrdersImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.intershipjava.intershipproject.services.implement</a>
+</div>
+
+<h1>Coverage Summary for Class: OrdersImpl (com.intershipjava.intershipproject.services.implement)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrdersImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (68/68)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">OrdersImpl$$EnhancerBySpringCGLIB$$b0f6c0df</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (68/68)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.intershipjava.intershipproject.services.implement;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.intershipjava.intershipproject.dto.OrderCreateDto;
+<i class="no-highlight">4</i>&nbsp;import com.intershipjava.intershipproject.dto.OrderDto;
+<i class="no-highlight">5</i>&nbsp;import com.intershipjava.intershipproject.dto.OrderPayDto;
+<i class="no-highlight">6</i>&nbsp;import com.intershipjava.intershipproject.dto.ProductDto;
+<i class="no-highlight">7</i>&nbsp;import com.intershipjava.intershipproject.exceptions.OrderExceptions;
+<i class="no-highlight">8</i>&nbsp;import com.intershipjava.intershipproject.factory.AbstractOrderFactory;
+<i class="no-highlight">9</i>&nbsp;import com.intershipjava.intershipproject.model.CreditCard;
+<i class="no-highlight">10</i>&nbsp;import com.intershipjava.intershipproject.model.Customer;
+<i class="no-highlight">11</i>&nbsp;import com.intershipjava.intershipproject.model.Order;
+<i class="no-highlight">12</i>&nbsp;import com.intershipjava.intershipproject.model.Product;
+<i class="no-highlight">13</i>&nbsp;import com.intershipjava.intershipproject.repository.OrderRepository;
+<i class="no-highlight">14</i>&nbsp;import com.intershipjava.intershipproject.repository.ProductRepository;
+<i class="no-highlight">15</i>&nbsp;import com.intershipjava.intershipproject.services.OrdersService;
+<i class="no-highlight">16</i>&nbsp;import com.intershipjava.intershipproject.services.ProductService;
+<i class="no-highlight">17</i>&nbsp;import com.intershipjava.intershipproject.services.validator.ValidatorService;
+<i class="no-highlight">18</i>&nbsp;import lombok.RequiredArgsConstructor;
+<i class="no-highlight">19</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i class="no-highlight">20</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;import javax.mail.internet.ParseException;
+<i class="no-highlight">23</i>&nbsp;import javax.transaction.Transactional;
+<i class="no-highlight">24</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">25</i>&nbsp;import java.time.LocalDateTime;
+<i class="no-highlight">26</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">27</i>&nbsp;import java.util.List;
+<i class="no-highlight">28</i>&nbsp;import java.util.UUID;
+<i class="no-highlight">29</i>&nbsp;
+<i class="no-highlight">30</i>&nbsp;@Service
+<b class="fc"><i class="no-highlight">31</i>&nbsp;@RequiredArgsConstructor(onConstructor = @__(@Autowired))</b>
+<i class="no-highlight">32</i>&nbsp;public class OrdersImpl implements OrdersService, Serializable {
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;    private final transient ValidatorService validatorService;
+<i class="no-highlight">35</i>&nbsp;    private final transient OrderRepository orderRepository;
+<i class="no-highlight">36</i>&nbsp;    private final transient ProductRepository productRepository;
+<i class="no-highlight">37</i>&nbsp;    private final transient ProductService productService;
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;    @Override
+<i class="no-highlight">40</i>&nbsp;    public List&lt;OrderDto&gt; getOrderListDba() {
+<b class="fc"><i class="no-highlight">41</i>&nbsp;        return orderToOrderDto(orderRepository.findAll());</b>
+<i class="no-highlight">42</i>&nbsp;    }
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    @Override
+<i class="no-highlight">45</i>&nbsp;    public List&lt;Product&gt; processOrderDBA(OrderCreateDto orderPayDto) {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        if (orderPayDto == null) {</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;            throw new OrderExceptions(&quot;Some problem occurs!&quot;);</b>
+<i class="no-highlight">48</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">49</i>&nbsp;        Customer customer = orderPayDto.getCustomer();</b>
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        validatorService.isValidName(customer.getName());</b>
+<b class="fc"><i class="no-highlight">51</i>&nbsp;        validatorService.isValidEmailAddress(customer.getEmail());</b>
+<i class="no-highlight">52</i>&nbsp;
+<b class="fc"><i class="no-highlight">53</i>&nbsp;        validatorService.validateProductsId(orderPayDto.getIdProducts());</b>
+<b class="fc"><i class="no-highlight">54</i>&nbsp;        validatorService.validateStock(orderPayDto.getIdProducts());</b>
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        validatorService.validateShoppingCartProducts(orderPayDto.getIdProducts());</b>
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        validatorService.validateProductOrderListFromDatabase(customer.getName(), orderPayDto.getIdProducts());</b>
+<i class="no-highlight">57</i>&nbsp;
+<i class="no-highlight">58</i>&nbsp;
+<b class="fc"><i class="no-highlight">59</i>&nbsp;        return createDtoOrder(customer, orderPayDto.getIdProducts());</b>
+<i class="no-highlight">60</i>&nbsp;    }
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;    @Transactional
+<i class="no-highlight">63</i>&nbsp;    @Override
+<i class="no-highlight">64</i>&nbsp;    public Order payOrderDba(OrderPayDto orderPayRequest) throws ParseException, java.text.ParseException {
+<b class="fc"><i class="no-highlight">65</i>&nbsp;        CreditCard creditCard = orderPayRequest.getCreditCard();</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;        validatorService.validateCreditCardNumberLength(creditCard.getCreditCardNumber());</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        validatorService.validateLuhnCreditCardAlgorithm(creditCard.getCreditCardNumber());</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;        validatorService.isValidCIV(creditCard.getCiv());</b>
+<b class="fc"><i class="no-highlight">69</i>&nbsp;        validatorService.isValidName(creditCard.getCardHolderName());</b>
+<b class="fc"><i class="no-highlight">70</i>&nbsp;        validatorService.isValidDate(creditCard.getExpiryDate());</b>
+<i class="no-highlight">71</i>&nbsp;
+<b class="fc"><i class="no-highlight">72</i>&nbsp;        if (orderRepository.findOrderById(orderPayRequest.getIdOrder()) == null) {</b>
+<b class="fc"><i class="no-highlight">73</i>&nbsp;            throw new OrderExceptions(&quot;Order doesn&#39;t exist&quot;);</b>
+<i class="no-highlight">74</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">75</i>&nbsp;        for (int i = 0; i &lt; orderRepository.findOrderById(orderPayRequest.getIdOrder()).getProductList().size(); i++) {</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;            if (orderRepository.findOrderById(orderPayRequest.getIdOrder()).getProductList().get(i).getQuantity() &lt; 1) {</b>
+<b class="fc"><i class="no-highlight">77</i>&nbsp;                throw new OrderExceptions(&quot;Some products from your order are out of stock!&quot;);</b>
+<i class="no-highlight">78</i>&nbsp;            }
+<i class="no-highlight">79</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">80</i>&nbsp;        if (orderRepository.findOrderById(orderPayRequest.getIdOrder()).isPayed()) {</b>
+<b class="fc"><i class="no-highlight">81</i>&nbsp;            throw new OrderExceptions(&quot;Order already payed!&quot;);</b>
+<i class="no-highlight">82</i>&nbsp;        }
+<i class="no-highlight">83</i>&nbsp;
+<b class="fc"><i class="no-highlight">84</i>&nbsp;        orderRepository.updateOrderStatus(orderPayRequest.getIdOrder(), true);</b>
+<b class="fc"><i class="no-highlight">85</i>&nbsp;        for (int i = 0; i &lt; orderRepository.findOrderById(orderPayRequest.getIdOrder()).getProductList().size(); i++) {</b>
+<b class="fc"><i class="no-highlight">86</i>&nbsp;            productRepository.updateProductQuantity(orderRepository.findOrderById(orderPayRequest.getIdOrder()).getProductList().get(i).getUuid());</b>
+<i class="no-highlight">87</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">88</i>&nbsp;        return orderRepository.findOrderById(orderPayRequest.getIdOrder());</b>
+<i class="no-highlight">89</i>&nbsp;    }
+<i class="no-highlight">90</i>&nbsp;
+<i class="no-highlight">91</i>&nbsp;    @Override
+<i class="no-highlight">92</i>&nbsp;    public List&lt;Product&gt; createDtoOrder(Customer customer, List&lt;String&gt; idProducts) {
+<b class="fc"><i class="no-highlight">93</i>&nbsp;        UUID uuid2 = UUID.randomUUID();</b>
+<i class="no-highlight">94</i>&nbsp;        double totalAmount;
+<b class="fc"><i class="no-highlight">95</i>&nbsp;        List&lt;ProductDto&gt; productDtoList = productService.getProductListByIdDB(idProducts);</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        totalAmount = productDtoList.stream().mapToDouble(ProductDto::getPrice).sum();</b>
+<i class="no-highlight">97</i>&nbsp;
+<b class="fc"><i class="no-highlight">98</i>&nbsp;        OrderDto orderDto = new OrderDto</b>
+<b class="fc"><i class="no-highlight">99</i>&nbsp;                .Builder(uuid2.toString())</b>
+<b class="fc"><i class="no-highlight">100</i>&nbsp;                .withDate(LocalDateTime.now())</b>
+<b class="fc"><i class="no-highlight">101</i>&nbsp;                .withCustomerName(customer.getName())</b>
+<b class="fc"><i class="no-highlight">102</i>&nbsp;                .withListOfProduct(productDtoList)</b>
+<b class="fc"><i class="no-highlight">103</i>&nbsp;                .withTotalAmount(totalAmount)</b>
+<b class="fc"><i class="no-highlight">104</i>&nbsp;                .build();</b>
+<i class="no-highlight">105</i>&nbsp;
+<b class="fc"><i class="no-highlight">106</i>&nbsp;        AbstractOrderFactory orderFactory = AbstractOrderFactory.getFactory(customer.getEmail().contains(&quot;endava&quot;));</b>
+<b class="fc"><i class="no-highlight">107</i>&nbsp;        OrderDto orderDto1 = orderFactory.getOrderDto(orderDto, false);</b>
+<i class="no-highlight">108</i>&nbsp;
+<b class="fc"><i class="no-highlight">109</i>&nbsp;        orderRepository.save(orderDtoToOrder(orderDto1));</b>
+<b class="fc"><i class="no-highlight">110</i>&nbsp;        return productService.productDtoToProduct(productDtoList);</b>
+<i class="no-highlight">111</i>&nbsp;
+<i class="no-highlight">112</i>&nbsp;    }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;    @Override
+<i class="no-highlight">115</i>&nbsp;    public OrderDto orderToOrderDto(Order order) {
+<b class="fc"><i class="no-highlight">116</i>&nbsp;        OrderDto orderDto = new OrderDto();</b>
+<b class="fc"><i class="no-highlight">117</i>&nbsp;        orderDto.setId(order.getId());</b>
+<b class="fc"><i class="no-highlight">118</i>&nbsp;        orderDto.setOrderId(order.getOrderId());</b>
+<b class="fc"><i class="no-highlight">119</i>&nbsp;        orderDto.setCustomerName(order.getCustomerName());</b>
+<b class="fc"><i class="no-highlight">120</i>&nbsp;        orderDto.setPaid(order.isPayed());</b>
+<b class="fc"><i class="no-highlight">121</i>&nbsp;        orderDto.setExternal(order.isExternal());</b>
+<b class="fc"><i class="no-highlight">122</i>&nbsp;        orderDto.setLocalDateTime(order.getLocalDateTime());</b>
+<b class="fc"><i class="no-highlight">123</i>&nbsp;        orderDto.setTotalAmount(order.getTotalAmount());</b>
+<b class="fc"><i class="no-highlight">124</i>&nbsp;        orderDto.setProductDtoList(productService.productsToDto(order.getProductList()));</b>
+<i class="no-highlight">125</i>&nbsp;
+<b class="fc"><i class="no-highlight">126</i>&nbsp;        return orderDto;</b>
+<i class="no-highlight">127</i>&nbsp;    }
+<i class="no-highlight">128</i>&nbsp;
+<i class="no-highlight">129</i>&nbsp;    @Override
+<i class="no-highlight">130</i>&nbsp;    public List&lt;OrderDto&gt; orderToOrderDto(List&lt;Order&gt; orderList) {
+<b class="fc"><i class="no-highlight">131</i>&nbsp;        List&lt;OrderDto&gt; orderDtoList = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">132</i>&nbsp;        for (Order order : orderList) {</b>
+<b class="fc"><i class="no-highlight">133</i>&nbsp;            orderDtoList.add(orderToOrderDto(order));</b>
+<b class="fc"><i class="no-highlight">134</i>&nbsp;        }</b>
+<i class="no-highlight">135</i>&nbsp;
+<b class="fc"><i class="no-highlight">136</i>&nbsp;        return orderDtoList;</b>
+<i class="no-highlight">137</i>&nbsp;    }
+<i class="no-highlight">138</i>&nbsp;
+<i class="no-highlight">139</i>&nbsp;    @Override
+<i class="no-highlight">140</i>&nbsp;    public Order orderDtoToOrder(OrderDto orderDto) {
+<b class="fc"><i class="no-highlight">141</i>&nbsp;        Order order = new Order();</b>
+<b class="fc"><i class="no-highlight">142</i>&nbsp;        order.setId(orderDto.getId());</b>
+<b class="fc"><i class="no-highlight">143</i>&nbsp;        order.setOrderId(orderDto.getOrderId());</b>
+<b class="fc"><i class="no-highlight">144</i>&nbsp;        order.setCustomerName(orderDto.getCustomerName());</b>
+<b class="fc"><i class="no-highlight">145</i>&nbsp;        order.setPayed(orderDto.isPaid());</b>
+<b class="fc"><i class="no-highlight">146</i>&nbsp;        order.setExternal(orderDto.isExternal());</b>
+<b class="fc"><i class="no-highlight">147</i>&nbsp;        order.setLocalDateTime(orderDto.getLocalDateTime());</b>
+<b class="fc"><i class="no-highlight">148</i>&nbsp;        order.setTotalAmount(orderDto.getTotalAmount());</b>
+<b class="fc"><i class="no-highlight">149</i>&nbsp;        order.setProductList(productService.productDtoToProduct(orderDto.getProductDtoList()));</b>
+<i class="no-highlight">150</i>&nbsp;
+<b class="fc"><i class="no-highlight">151</i>&nbsp;        return order;</b>
+<i class="no-highlight">152</i>&nbsp;    }
+<i class="no-highlight">153</i>&nbsp;
+<i class="no-highlight">154</i>&nbsp;
+<i class="no-highlight">155</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-11-11 16:10</div>
+</div>
+</body>
+</html>

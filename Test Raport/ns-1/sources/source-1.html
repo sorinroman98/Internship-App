@@ -1,0 +1,175 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CustomerImp</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.intershipjava.intershipproject.services.implement</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerImp (com.intershipjava.intershipproject.services.implement)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerImp</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.intershipjava.intershipproject.services.implement;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.intershipjava.intershipproject.dto.CustomerDto;
+<i class="no-highlight">4</i>&nbsp;import com.intershipjava.intershipproject.exceptions.CustomerExceptions;
+<i class="no-highlight">5</i>&nbsp;import com.intershipjava.intershipproject.model.Customer;
+<i class="no-highlight">6</i>&nbsp;import com.intershipjava.intershipproject.repository.CustomerRepository;
+<i class="no-highlight">7</i>&nbsp;import com.intershipjava.intershipproject.services.CustomerService;
+<i class="no-highlight">8</i>&nbsp;import com.intershipjava.intershipproject.services.validator.ValidatorService;
+<i class="no-highlight">9</i>&nbsp;import lombok.RequiredArgsConstructor;
+<i class="no-highlight">10</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i class="no-highlight">11</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;import java.util.List;
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;@Service
+<b class="fc"><i class="no-highlight">16</i>&nbsp;@RequiredArgsConstructor(onConstructor = @__(@Autowired))</b>
+<i class="no-highlight">17</i>&nbsp;public class CustomerImp implements CustomerService {
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    private final CustomerRepository customerRepository;
+<i class="no-highlight">20</i>&nbsp;    private final ValidatorService validator;
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;    @Override
+<i class="no-highlight">23</i>&nbsp;    public boolean setValidEmail(String email) {
+<b class="fc"><i class="no-highlight">24</i>&nbsp;        return validator.isValidEmailAddress(email);</b>
+<i class="no-highlight">25</i>&nbsp;    }
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;    @Override
+<i class="no-highlight">28</i>&nbsp;    public boolean setValidName(String name) throws CustomerExceptions {
+<b class="fc"><i class="no-highlight">29</i>&nbsp;        return validator.isValidName(name);</b>
+<i class="no-highlight">30</i>&nbsp;    }
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;    @Override
+<i class="no-highlight">33</i>&nbsp;    public CustomerDto saveCustomer(Customer customer) {
+<b class="fc"><i class="no-highlight">34</i>&nbsp;        if (customer == null) {</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;            throw new CustomerExceptions(&quot;Invalid input&quot;);</b>
+<i class="no-highlight">36</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">37</i>&nbsp;        customerRepository.save(customer);</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;        return customerToDto(customer);</b>
+<i class="no-highlight">39</i>&nbsp;    }
+<i class="no-highlight">40</i>&nbsp;
+<i class="no-highlight">41</i>&nbsp;    @Override
+<i class="no-highlight">42</i>&nbsp;    public List&lt;Customer&gt; listAllCustomers() {
+<b class="fc"><i class="no-highlight">43</i>&nbsp;        if (customerRepository.findAll().isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">44</i>&nbsp;            throw new CustomerExceptions(&quot;Empty customers list!&quot;);</b>
+<i class="no-highlight">45</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        return customerRepository.findAll();</b>
+<i class="no-highlight">47</i>&nbsp;    }
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;    @Override
+<i class="no-highlight">50</i>&nbsp;    public Customer customerDtoToCustomer(CustomerDto customerDto) {
+<b class="fc"><i class="no-highlight">51</i>&nbsp;        if (customerDto == null) {</b>
+<b class="fc"><i class="no-highlight">52</i>&nbsp;            throw new CustomerExceptions(&quot;Invalid customerDto object!&quot;);</b>
+<i class="no-highlight">53</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">54</i>&nbsp;        Customer customerResponse = new Customer();</b>
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        customerResponse.setEmail(customerDto.getEmail());</b>
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        customerResponse.setName(customerDto.getName());</b>
+<b class="fc"><i class="no-highlight">57</i>&nbsp;        return customerResponse;</b>
+<i class="no-highlight">58</i>&nbsp;    }
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;    @Override
+<i class="no-highlight">61</i>&nbsp;    public CustomerDto customerToDto(Customer customer) {
+<b class="fc"><i class="no-highlight">62</i>&nbsp;        if (customer == null) {</b>
+<b class="fc"><i class="no-highlight">63</i>&nbsp;            throw new CustomerExceptions(&quot;Invalid customer object!&quot;);</b>
+<i class="no-highlight">64</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">65</i>&nbsp;        CustomerDto customerDto = new CustomerDto();</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;        customerDto.setEmail(customer.getEmail());</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        customerDto.setName(customer.getName());</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;        return customerDto;</b>
+<i class="no-highlight">69</i>&nbsp;    }
+<i class="no-highlight">70</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-11-11 16:10</div>
+</div>
+</body>
+</html>

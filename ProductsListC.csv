@@ -1,0 +1,10 @@
+Category      ,Model                           ,Price  ,Issues                                            ,Stock
+Laptop        ,Lenovo Legion 5 15ACH6H         ,2699.99,Nu are incarcator                                 ,3
+Laptop        ,LENOVO IdeaPad Gaming 3 15ACH6  ,3699.99,Nu are incarcator . Display cu zgarieturi fine    ,3
+Monitoare     ,IPS LED DELL S2421HN            ,399.99 ,Zgarieturi fine pe ecran                          ,4
+Electrocaznice,Cafetierea                      ,500.99 ,Urmze de uzura pe suprafata exterioara            ,1
+Desktop       ,MYRIA Digital 34 Powered by ASUS,1349.99,Un slot de ram defect                             ,2
+Desktop       ,MYRIA Vision V39 Powered by Asus,2349.99,Placa video defecta                               ,4
+Telefoane     ,Samsung Galaxy s9               ,425.99 ,Nu are incarcator . Baterie cu autonomie scazuta  ,1
+Telefoane     ,Samsung Galaxy s10              ,799.99 ,Baterie cu autonomie scazut . Urme usoare de uzura,2
+Telefoane     ,Iphone X                        ,1799.99,Baterie cu autonomie scazut                       ,2
